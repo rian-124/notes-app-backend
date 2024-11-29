@@ -66,10 +66,10 @@ const getNoteByIdHandler = (request, h) => {
 
   const response = h.response({
     status : 'fail',
-    message : `gagal menampilkan data ${note}`,
+    message : 'gagal menampilkan data',
   });
 
-  response.code = 404;
+  response.code(404);
   return response;
 };
 const updateNoteHandler = (request, h) => {
@@ -88,7 +88,7 @@ const updateNoteHandler = (request, h) => {
       status : 'success',
       message : 'Data berhasil di ubah',
     });
-    response.code = 200;
+    response.code(200);
     return response;
   }
 
@@ -97,7 +97,7 @@ const updateNoteHandler = (request, h) => {
     message : 'data gagal di ubah id tidak di temukan',
   });
 
-  response.code = 404;
+  response.code(404);
   return response;
 };
 
@@ -112,7 +112,7 @@ const deleteNoteHandler = (request, h) => {
       status : 'success',
       message : 'Data berhasil di hapus',
     });
-    response.code = 200;
+    response.code(200);
     return response;
   };
 
@@ -121,7 +121,7 @@ const deleteNoteHandler = (request, h) => {
     message : 'data gagal di hapus id tidak di temukan',
   });
 
-  reponse.code = 404;
+  reponse.code(404);
   return reponse;
 
 };
