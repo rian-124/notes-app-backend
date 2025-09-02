@@ -22,6 +22,7 @@
     "@hapi/jwt": "^3.2.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.1",
+    "google-translate-tts": "^0.4.0-dev",
     "joi": "^18.0.0",
     "nanoid": "^3.3.7",
     "node-pg-migrate": "^8.0.3",
