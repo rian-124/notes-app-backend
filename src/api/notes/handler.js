@@ -6,6 +6,7 @@ class NotesHandler {
     this.postNoteHandler = this.postNoteHandler.bind(this);
     this.getNotesHandler = this.getNotesHandler.bind(this);
     this.getNoteByIdHandler = this.getNoteByIdHandler.bind(this);
+    this.getUsersByUsernameHandler = this.getUsersByUsernameHandler.bind(this);
     this.putNoteHandler = this.putNoteHandler.bind(this);
     this.deleteNoteHandler = this.deleteNoteHandler.bind(this);
   }
@@ -15,7 +16,12 @@ class NotesHandler {
     const { title = 'untitled', body, tags } = request.payload;
     const { id: credentialsId } = request.auth.credentials;
 
-    const noteId = await this._service.addNote({ title, body, tags, owner: credentialsId });
+    const noteId = await this._service.addNote({
+      title,
+      body,
+      tags,
+      owner: credentialsId,
+    });
 
     const response = h.response({
       status: 'success',
@@ -47,7 +53,7 @@ class NotesHandler {
     const { id } = request.params;
     const { id: credentialsId } = request.auth.credentials;
 
-    await this._service.verifyNoteOwner(id, credentialsId);
+    await this._service.verifyNoteAccess(id, credentialsId);
     const note = await this._service.getNoteById(id);
 
     return {
@@ -58,12 +64,23 @@ class NotesHandler {
     };
   }
 
+  async getUsersByUsernameHandler(request) {
+    const { username = '' } = request.query;
+    const users = await this._service.getUsersByUsername(username);
+    return {
+      status: 'success',
+      data: {
+        users,
+      },
+    };
+  }
+
   async putNoteHandler(request) {
     this._validator.validateNotePayload(request.payload);
     const { id } = request.params;
     const { id: credentialsId } = request.auth.credentials;
 
-    await this._service.verifyNoteOwner(id, credentialsId);
+    await this._service.verifyNoteAccess(id, credentialsId);
     await this._service.editNoteById(id, request.payload);
 
     return {
