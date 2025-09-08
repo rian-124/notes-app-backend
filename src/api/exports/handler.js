@@ -11,7 +11,7 @@ class ExportsHandler {
 
     const message = {
       userId: request.auth.credentials.id,
-      targerEmail: request.payload.targerEmail,
+      targetEmail: request.payload.targetEmail,
     };
 
     await this._service.sendMessage('export:notes', JSON.stringify(message));
