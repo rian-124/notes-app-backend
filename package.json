@@ -20,6 +20,7 @@
   "dependencies": {
     "@hapi/hapi": "^21.3.12",
     "@hapi/jwt": "^3.2.0",
+    "amqplib": "^0.10.9",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.1",
     "google-translate-tts": "^0.4.0-dev",
