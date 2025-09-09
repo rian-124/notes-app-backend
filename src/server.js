@@ -23,9 +23,8 @@ const ProducerService = require('./services/rabbitmq/ProducerService.js');
 const ExportsValidator = require('./validator/exports/index.js');
 
 const uploads = require('./api/uploads');
-const StorageService = require('./services/storage/StorageService');
+const StorageService = require('./services/S3/StorageService');
 const UploadsValidator = require('./validator/uploads');
-const path = require('path');
 const Inert = require('@hapi/inert');
 
 const init = async () => {
@@ -33,7 +32,9 @@ const init = async () => {
   const notesService = new NotesService(collaborationsService);
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-  const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
+  // local version
+  // const storageService = new StorageService(path.resolve(__dirname, 'api/uploads/file/images'));
+  const storageService = new StorageService();
 
   const server = Hapi.server({
     port: process.env.APP_PORT,
@@ -121,6 +122,7 @@ const init = async () => {
   server.ext('onPreResponse', (request, h) => {
     const { response } = request;
 
+    console.log(response);
 
     if (response instanceof ClientError) {
       const newResponse = h.response({
