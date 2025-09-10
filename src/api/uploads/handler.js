@@ -7,10 +7,13 @@ class UploadsHandler {
   }
 
   async postUploadImageHandler(request, h) {
+    console.log(request.payload);
     const { data } = request.payload;
+    console.log(data);
     this._validator.validateImageHeaders(data.hapi.headers);
 
-    const fileLocation = await this._service.writeFile(data, data.hapi);
+    const filename = await this._service.writeFile(data, data.hapi);
+    const fileLocation = `http://${process.env.APP_HOST}:${process.env.APP_PORT}/upload/images/${filename}`;
 
     const response = h.response({
       status: 'success',

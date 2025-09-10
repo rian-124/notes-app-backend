@@ -3,8 +3,9 @@ const InvariantError = require('../../exceptions/InvariantError');
 const { nanoid } = require('nanoid');
 
 class CollaborationsService {
-  constructor() {
+  constructor(chacheService) {
     this._pool = new Pool();
+    this._chacheService = chacheService;
   }
 
   async addCollaboration(noteId, userId) {
@@ -18,6 +19,9 @@ class CollaborationsService {
     if (!result.rows.length) {
       throw new InvariantError('Collaboration failed to be added');
     }
+
+    await this._chacheService.del(`notes:${userId}`);
+
     return result.rows[0].id;
   }
 
@@ -32,6 +36,8 @@ class CollaborationsService {
     if (!result.rows.length) {
       throw new InvariantError('Failed deleted collaboration');
     }
+
+    await this._chacheService.del(`notes:${userId}`);
   }
 
   async verifyCollaborator(noteId, userId) {
